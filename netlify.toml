@@ -1,0 +1,35 @@
+# Netlify Configuration
+# Deploy alternativo para Netlify
+
+[build]
+  command = "npm run build:production"
+  publish = "client/build"
+
+[build.environment]
+  NODE_ENV = "production"
+  NODE_VERSION = "18"
+
+# Redirects para SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de segurança
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache para assets
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Functions (API)
+[functions]
+  directory = "server"

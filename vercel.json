@@ -1,0 +1,47 @@
+# Vercel Configuration
+# Deploy automático do CODserver Ultimate
+
+# Build settings
+[build]
+command = "npm run build:production"
+publish = "client/build"
+
+# Environment variables
+[env]
+NODE_ENV = "production"
+PORT = "3001"
+
+# Functions (API routes)
+[functions]
+"server/index.js" = {
+  runtime = "nodejs18.x"
+}
+
+# Redirects para SPA
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+# Headers de segurança
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+X-XSS-Protection = "1; mode=block"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache para assets estáticos
+[[headers]]
+for = "/static/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# CORS para API
+[[headers]]
+for = "/api/*"
+[headers.values]
+Access-Control-Allow-Origin = "*"
+Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+Access-Control-Allow-Headers = "Content-Type, Authorization"
